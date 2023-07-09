@@ -87,9 +87,7 @@ Access the API at
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `name` | `string` | **Required** name of the product.  |
-| `price` | `string` | **Required** price of the product |
-| `quantity` | `string` | **Required**. quantity of the product |
+| `quantity` | `integer` | **Required**. quantity of the product |
 
 #### List all the Orders
 

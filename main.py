@@ -43,19 +43,16 @@ async def create_product(product: Product = Body(...)):
 
 
 @app.put("/edit-products/{product_id}", response_description="Update product")
-async def update_product(product_id: str, product: Product = Body(...)):
+async def update_product(product_id: str, quantity: int):
     existing_product = await db["products"].find_one({"_id": product_id})
     if not existing_product:
         raise HTTPException(
             status_code=404, detail=f"Product with ID {product_id} not found.")
 
-    # Update the product
-    updated_product = product.dict(exclude_unset=True)  # Exclude unset fields
-    await db["products"].update_one({"_id": product_id}, {"$set": updated_product})
-
-    new_product = await db["products"].find_one({"_id": product_id})
-
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Product updated succesfully", "product": new_product})
+    # Update the product quantity
+    await db["products"].update_one({"_id": product_id}, {"$set": {"quantity": quantity}})
+    update_product = await db["products"].find_one({"_id": product_id})
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Product quantity updated successfully", "product": update_product})
 
 
 @app.get("/get-orders/", response_description="List all orders", response_model=List[Order])
